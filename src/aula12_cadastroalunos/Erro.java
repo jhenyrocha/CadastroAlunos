@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package frame04;
+package aula12_cadastroalunos;
 
 /**
  *
- * @author MauricioAsenjo
+ * @author unisanta
  */
 public class Erro {
-private static boolean erro;
+    private static boolean erro;
 private static String mens;
 
 public static void setErro(boolean _erro)

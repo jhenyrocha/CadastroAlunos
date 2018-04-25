@@ -1,20 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package frame04;
 
+package aula12_cadastroalunos;
 import java.sql.*;
 
-/**
- *
- * @author unisanta
- */
-public class LivroDAL {
+
+public class AlunoDAL {
 
     private static Connection con;
-
+    
     public static void conecta(String _bd)
     {
         Erro.setErro(false);
@@ -42,17 +34,17 @@ public class LivroDAL {
         }
     }
 
-    public static void inseriLivro(Livro umlivro)
+    public static void inseriLivro(Aluno umlivro)
     {
         Erro.setErro(false);
         try 
         {
-            PreparedStatement st = con.prepareStatement("insert into TabLivros (titulo,autor,editora,ano,localizacao) values (?,?,?,?,?)");
-            st.setString(1,umlivro.getTitulo());
-            st.setString(2,umlivro.getAutor());
-            st.setString(3,umlivro.getEditora());
-            st.setString(4,umlivro.getAnoEdicao());
-            st.setString(5,umlivro.getLocalizacao());
+            PreparedStatement st = con.prepareStatement("insert into TabLivros (matricula,nome,p1,p2,p3) values (?,?,?,?,?)");
+            st.setString(1,umlivro.getMatricula());
+            st.setString(2,umlivro.getNome());
+            st.setString(3,umlivro.getP1());
+            st.setString(4,umlivro.getP2());
+            st.setString(5,umlivro.getP3());
             st.executeUpdate();
             st.close();
         }
@@ -62,21 +54,21 @@ public class LivroDAL {
         }
     }
 
-    public static void consultaLivro(Livro umlivro)
+    public static void consultaLivro(Aluno umlivro)
     {
         ResultSet rs;
 
         try
         {
-            PreparedStatement st = con.prepareStatement("SELECT * FROM TabLivros WHERE titulo=?");
-            st.setString(1,umlivro.getTitulo());
+            PreparedStatement st = con.prepareStatement("SELECT * FROM TabLivros WHERE matricula=?");
+            st.setString(1,umlivro.getMatricula());
             rs = st.executeQuery();
             if (rs.next())
             {
-                umlivro.setAutor(rs.getString("autor"));
-                umlivro.setEditora(rs.getString("editora"));
-                umlivro.setAnoEdicao(rs.getString("ano"));
-                umlivro.setLocalizacao(rs.getString("localizacao"));
+                umlivro.setNome(rs.getString("nome"));
+                umlivro.setP1(rs.getString("p1"));
+                umlivro.setP2(rs.getString("p2"));
+                umlivro.setP3(rs.getString("p3"));
             }
             else
             {
@@ -90,4 +82,5 @@ public class LivroDAL {
             Erro.setErro(e.getMessage());
         }
     }
+    
 }
