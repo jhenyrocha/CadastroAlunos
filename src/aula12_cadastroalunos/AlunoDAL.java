@@ -1,86 +1,106 @@
-
 package aula12_cadastroalunos;
-import java.sql.*;
 
+import static aula12_cadastroalunos.AlunoBLL.*;
+import java.sql.*;
+import javax.swing.JOptionPane;
 
 public class AlunoDAL {
 
     private static Connection con;
-    
-    public static void conecta(String _bd)
-    {
+
+    public static void conecta(String _bd) {
         Erro.setErro(false);
-        try
-        {
+        try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             con = DriverManager.getConnection("jdbc:ucanaccess://" + _bd);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Erro.setErro(e.getMessage());
         }
     }
 
-    public static void desconecta()
-    {
+    public static void desconecta() {
         Erro.setErro(false);
-        try 
-        {
+        try {
             con.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Erro.setErro(e.getMessage());
         }
     }
 
-    public static void inseriLivro(Aluno umlivro)
-    {
+    public static void insereAluno(Aluno umaluno) {
         Erro.setErro(false);
-        try 
-        {
-            PreparedStatement st = con.prepareStatement("insert into TabLivros (matricula,nome,p1,p2,p3) values (?,?,?,?,?)");
-            st.setString(1,umlivro.getMatricula());
-            st.setString(2,umlivro.getNome());
-            st.setString(3,umlivro.getP1());
-            st.setString(4,umlivro.getP2());
-            st.setString(5,umlivro.getP3());
+        try {
+            PreparedStatement st = con.prepareStatement("insert into TabAluno (matricula,nome,p1,p2,p3) values (?,?,?,?,?)");
+            st.setString(1, umaluno.getMatricula());
+            st.setString(2, umaluno.getNome());
+            st.setString(3, umaluno.getP1());
+            st.setString(4, umaluno.getP2());
+            st.setString(5, umaluno.getP3());
             st.executeUpdate();
             st.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             Erro.setErro(e.getMessage());
         }
     }
 
-    public static void consultaLivro(Aluno umlivro)
-    {
+    public static void consultaAluno(Aluno umaluno) {
         ResultSet rs;
 
-        try
-        {
-            PreparedStatement st = con.prepareStatement("SELECT * FROM TabLivros WHERE matricula=?");
-            st.setString(1,umlivro.getMatricula());
+        try {
+            PreparedStatement st = con.prepareStatement("SELECT * FROM TabAluno WHERE matricula=?");
+            st.setString(1, umaluno.getMatricula());
             rs = st.executeQuery();
-            if (rs.next())
-            {
-                umlivro.setNome(rs.getString("nome"));
-                umlivro.setP1(rs.getString("p1"));
-                umlivro.setP2(rs.getString("p2"));
-                umlivro.setP3(rs.getString("p3"));
-            }
-            else
-            {
+            if (rs.next()) {
+                umaluno.setNome(rs.getString("nome"));
+                umaluno.setP1(rs.getString("p1"));
+                umaluno.setP2(rs.getString("p2"));
+                umaluno.setP3(rs.getString("p3"));
+            } else {
                 Erro.setErro("Livro nao localizado.");
                 return;
             }
             st.close();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             Erro.setErro(e.getMessage());
         }
     }
+
+    public static void deletaAluno(Aluno umaluno) {
+       
+        Erro.setErro(false);
+
+        try {
+            
+            PreparedStatement st = con.prepareStatement("DELETE FROM TabAluno WHERE matricula=?");
+            st.setString(1, umaluno.getMatricula());
+            st.executeUpdate();
+            st.close();
+
+        } catch (Exception e) {
+
+            Erro.setErro("Erro ao excluir");
+        }
+    }
     
+    public static void updateAluno(Aluno umaluno) {
+       
+        Erro.setErro(false);
+
+        try {
+            
+            PreparedStatement st = con.prepareStatement("UPDATE TabAluno SET nome=?,p1=?,p2=?,p3=? WHERE matricula=?");
+            st.setString(1, umaluno.getMatricula());
+            st.setString(2, umaluno.getNome());
+            st.setString(3, umaluno.getP1());
+            st.setString(4, umaluno.getP2());
+            st.setString(5, umaluno.getP3());
+            st.executeUpdate();
+            st.close();
+
+        } catch (Exception e) {
+
+            Erro.setErro(e.getMessage());
+        }
+    }
+
 }

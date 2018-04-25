@@ -18,11 +18,13 @@ public class AlunoIHM extends javax.swing.JFrame {
      */
     public AlunoIHM() {
         initComponents();
-        AlunoDAL.conecta("Livros.mdb");
-        if(Erro.getErro()) return;
+        AlunoDAL.conecta("Aluno.mdb");
+        if (Erro.getErro()) {
+            return;
+        }
     }
-Aluno aluno = new Aluno();
-    
+    Aluno aluno = new Aluno();
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -88,8 +90,18 @@ Aluno aluno = new Aluno();
         jLabel6.setText("P2:");
 
         deletar.setText("Deletar");
+        deletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletarActionPerformed(evt);
+            }
+        });
 
         update.setText("Update");
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -172,42 +184,41 @@ Aluno aluno = new Aluno();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_limparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_limparActionPerformed
-       txt_matricula.setText("");
-       txt_nome.setText("");
-       txt_p1.setText("");
-       txt_p2.setText("");
-       txt_p3.setText("");
+        txt_matricula.setText("");
+        txt_nome.setText("");
+        txt_p1.setText("");
+        txt_p2.setText("");
+        txt_p3.setText("");
     }//GEN-LAST:event_btn_limparActionPerformed
 
     private void btn_SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SalvarActionPerformed
-        
-        
+
         aluno.setMatricula(txt_matricula.getText());
         aluno.setNome(txt_nome.getText());
         aluno.setP1(txt_p1.getText());
         aluno.setP2(txt_p2.getText());
         aluno.setP3(txt_p3.getText());
-        AlunoDAL.inseriLivro(aluno);
-        if(Erro.getErro()==true)
-        {
-            JOptionPane.showMessageDialog(null,Erro.getMens());
+        AlunoBLL.validaInsere(aluno);
+        AlunoDAL.insereAluno(aluno);
+        if (Erro.getErro() == true) {
+            JOptionPane.showMessageDialog(null, Erro.getMens());
+        } else {
+            JOptionPane.showMessageDialog(null, "Salvo Com Sucesso!!");
         }
-        else
-            JOptionPane.showMessageDialog(null,"Salvo Com Sucesso!!");
-        
+
     }//GEN-LAST:event_btn_SalvarActionPerformed
 
     private void btn_consultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_consultarActionPerformed
-      
+
         aluno.setMatricula(txt_matricula.getText());
-        
-      AlunoDAL.consultaLivro(aluno);
-        
-       txt_matricula.setText(aluno.getMatricula());
-       txt_nome.setText(aluno.getNome());
-       txt_p1.setText(aluno.getP1());
-       txt_p2.setText(aluno.getP2());
-       txt_p3.setText(aluno.getP3());
+
+        AlunoDAL.consultaAluno(aluno);
+
+        txt_matricula.setText(aluno.getMatricula());
+        txt_nome.setText(aluno.getNome());
+        txt_p1.setText(aluno.getP1());
+        txt_p2.setText(aluno.getP2());
+        txt_p3.setText(aluno.getP3());
     }//GEN-LAST:event_btn_consultarActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -219,7 +230,39 @@ Aluno aluno = new Aluno();
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_matriculaActionPerformed
 
-    
+    private void deletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletarActionPerformed
+        
+        aluno.setMatricula(txt_matricula.getText());
+        AlunoBLL.validaMatricula(aluno);
+        AlunoDAL.deletaAluno(aluno);
+
+         if (Erro.getErro() == true) {
+            JOptionPane.showMessageDialog(null, Erro.getMens());
+        } else {
+            JOptionPane.showMessageDialog(null, "Deletado com sucesso");
+        }
+
+    }//GEN-LAST:event_deletarActionPerformed
+
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        
+        aluno.setMatricula(txt_matricula.getText());
+        aluno.setNome(txt_nome.getText());
+        aluno.setP1(txt_p1.getText());
+        aluno.setP2(txt_p2.getText());
+        aluno.setP3(txt_p3.getText());
+        AlunoDAL.updateAluno(aluno);
+
+         if (Erro.getErro() == true) {
+            JOptionPane.showMessageDialog(null, Erro.getMens());
+        } else {
+            JOptionPane.showMessageDialog(null, "Alterado com sucesso");
+        } 
+        
+        
+        
+    }//GEN-LAST:event_updateActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

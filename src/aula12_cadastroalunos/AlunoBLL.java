@@ -10,7 +10,7 @@ package aula12_cadastroalunos;
  * @author unisanta
  */
 public class AlunoBLL {
-    public static void validaDados(Aluno aluno)
+    public static void validaInsere(Aluno aluno)
     {
         Erro.setErro(false);
         try
@@ -42,12 +42,24 @@ public class AlunoBLL {
                     Erro.setErro("O campo P2 é de preenchimento obrigatório..."); return;
                 }
 
-
-            
-            AlunoDAL.inseriLivro(aluno);
             if (Erro.getErro()) 
                 return;
     }
 
+     public static void validaMatricula(Aluno aluno)
+    {
+        Erro.setErro(false);
+        try
+        {
+            if (Integer.parseInt(aluno.getMatricula()) == 0 || Character.isDigit(Integer.parseInt(aluno.getMatricula())))
+                {Erro.setErro("O campo MATRICULA é de preenchimento obrigatório..."); return;}  
+        }catch(Exception e)
+        {
+            Erro.setErro("O campo Matricula é letra  de preenchimento obrigatório..."); return;
+        }     
+            AlunoDAL.deletaAluno(aluno);
+            if (Erro.getErro()) 
+                return;
+    }
 }
     
